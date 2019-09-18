@@ -29,9 +29,6 @@ public class Process {
         return timeConsumption;
     }
 
-
-
-
     public String getName() {
         return name;
     }

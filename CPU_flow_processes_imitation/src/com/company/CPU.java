@@ -13,25 +13,22 @@ public class CPU implements Runnable {
     private volatile boolean isFreeNow;
 
     public CPU(ProcessQueue processQueue) {
-        this.isFreeNow = true; // cause it was just created and has no tasks
+        bootUpCPU(100);
         this.processQueue = processQueue;
     }
 
     @Override
     public void run() {
-        int i = 0;
         boolean canContinue;
         while (true) {
             Process process = processQueue.completeOneProcessAndRemoveFromQueue();
             canContinue = (process != null);
             if (!canContinue) {
-                System.out.println("The end. All processes completed. Nothing to process");
+                System.out.println("\n[CPU log]: The end. All processes completed. Queue is empty. Nothing to process.");
                 break;
             } else {
-                System.out.println("process #" + i + "added to Queue");
-                System.out.println("next process will start after" + process.getTimeConsumption());
-                imitateExecution(); // just sleep
-                i++;
+                imitateExecution(process); // just sleep
+                System.out.println("\t[CPU log]: " + process.getName() + " >>> was executed!\n");
             }
         }
     }
@@ -40,10 +37,13 @@ public class CPU implements Runnable {
     /**
      * generates random value and cause Thread.sleep()
      */
-    public void imitateExecution() {
+    public void imitateExecution(Process process) {
+        System.out.println();
         isFreeNow = false;
         try {
-            Thread.sleep(generateProcessingTime(CPU_MIN_PROCESSING_TIME, CPU_MAX_PROCESSING_TIME));
+            int executionTime = generateProcessingTime(CPU_MIN_PROCESSING_TIME, CPU_MAX_PROCESSING_TIME);
+            System.out.println("\t[CPU log]: " + process.getName() + " >>> will take " + executionTime + " seconds to proceed");
+            Thread.sleep(executionTime);
         } catch (InterruptedException e) {
             //e.printStackTrace();
             System.out.println(Thread.currentThread().getName() + " has been interrupted");
@@ -54,11 +54,29 @@ public class CPU implements Runnable {
         }
     }
 
+
+    /**
+     * take some time to load. that guarantees that Queue will not be empty when CPU starts
+     */
+    public void bootUpCPU(int bootingTime) {
+        isFreeNow = false;
+        try {
+            Thread.sleep(bootingTime);
+            System.out.println("\n[CPU log]: CPU is booting up!");
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+            System.out.println(Thread.currentThread().getName() + " has been interrupted");
+            System.out.println(Thread.currentThread().isInterrupted());    // false
+            Thread.currentThread().interrupt();
+        } finally {
+            isFreeNow = true; // cause it was just created and has no tasks
+        }
+    }
     /**
      * generate random lifetime for process
      */
     private int generateProcessingTime(int min, int max) {
-        return (int) (min + Math.random() * (max - min + 1)) * 100;
+        return (int) (min + Math.random() * (max - min + 1)) * 15;
     }
 
     /**

@@ -22,15 +22,12 @@ public class ComputingSystemImitation {
         //resource
         ProcessQueue processQueue = new ProcessQueue();
 
-        //consumer
-        new Thread(new CPU(processQueue)).start();
-
-
-        int nProcessesSubmittedToExecution = 5;
+        int nProcessesSubmittedToExecution = 100;
         //producer
         new Thread(new ProcessFlow(processQueue, nProcessesSubmittedToExecution)).start();
 
-
+        //consumer
+        new Thread(new CPU(processQueue)).start();
     }
 
 }
