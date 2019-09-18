@@ -24,24 +24,21 @@ public class ProcessFlow implements Runnable {
             process = new Process("process #" + i);
             boolean addedSuccessfully = processQueue.addOneProcess(process);
             if (!addedSuccessfully){
-                System.out.println("\t[PROCESS FLOW LOG]: " + process.getName() + " was not added to Queue cause it was full");
+                System.out.println("\t[PROCESS_FLOW log]: " + process.getName() + " was not added to Queue cause it was full");
                 makePauseBeforeCreatingNext(process);
                 continue;
             }
-            System.out.println("\t[PROCESS FLOW LOG]: " + process.getName() + " added to Queue");
+            System.out.println("\t[PROCESS_FLOW log]: " + process.getName() + " added to Queue");
             makePauseBeforeCreatingNext(process);
         }
     }
-
-
-
 
     /**
      * just pause according to task
      */
     public void makePauseBeforeCreatingNext(Process process) {
         try {
-            System.out.println("\t[PROCESS FLOW LOG]: next process will be generated after" + process.getTimeConsumption());
+            System.out.println("\t[PROCESS_FLOW log]: next process will be generated after" + process.getTimeConsumption());
             Thread.sleep(process.getTimeConsumption());
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -17,7 +17,6 @@ public class ProcessQueue {
     private Queue<Process> queue = new LinkedList<>();
 
 
-    //sync
     /**
      * @return true if added OR false if queue was full;
      */

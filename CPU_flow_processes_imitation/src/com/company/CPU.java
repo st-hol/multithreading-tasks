@@ -72,6 +72,7 @@ public class CPU implements Runnable {
             isFreeNow = true; // cause it was just created and has no tasks
         }
     }
+
     /**
      * generate random lifetime for process
      */
