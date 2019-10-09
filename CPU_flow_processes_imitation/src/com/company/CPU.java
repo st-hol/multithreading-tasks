@@ -42,7 +42,7 @@ public class CPU implements Runnable {
         isFreeNow = false;
         try {
             int executionTime = generateProcessingTime(CPU_MIN_PROCESSING_TIME, CPU_MAX_PROCESSING_TIME);
-            System.out.println("\t[CPU log]: " + process.getName() + " >>> will take " + executionTime + " seconds to proceed");
+            System.out.println("\t[CPU log]: " + process.getName() + " >>> will take " + executionTime + " millis to proceed");
             Thread.sleep(executionTime);
         } catch (InterruptedException e) {
             //e.printStackTrace();

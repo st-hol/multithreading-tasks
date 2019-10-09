@@ -38,7 +38,7 @@ public class ProcessFlow implements Runnable {
      */
     public void makePauseBeforeCreatingNext(Process process) {
         try {
-            System.out.println("\t[PROCESS_FLOW log]: next process will be generated after" + process.getTimeConsumption());
+            System.out.println("\t[PROCESS_FLOW log]: next process will be generated after " + process.getTimeConsumption() + " millis");
             Thread.sleep(process.getTimeConsumption());
         } catch (InterruptedException e) {
             e.printStackTrace();
