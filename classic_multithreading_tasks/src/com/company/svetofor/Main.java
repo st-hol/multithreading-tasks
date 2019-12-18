@@ -43,8 +43,8 @@ class FirstTrafficLight implements Runnable{
     public void run() {
         while (true) {
             try {
-                int waitTime = generateProcessingTime(500,2000);
-                Thread.sleep(waitTime);
+                int processingTime = generateProcessingTime(500,2000);
+                Thread.sleep(processingTime);
                 currentLight = exchanger.exchange(currentLight);
                 System.out.println("FirstTrafficLight color is: " + currentLight + " now");
             } catch (InterruptedException ex) {
@@ -66,8 +66,8 @@ class SecondTrafficLight implements Runnable{
 
         while (true) {
             try {
-                int waitTime = generateProcessingTime(500,2000);
-                Thread.sleep(waitTime);
+                int processingTime = generateProcessingTime(500,2000);
+                Thread.sleep(processingTime);
                 currentLight = exchanger.exchange(currentLight);
                 System.out.println("SecondTrafficLight color is: " + currentLight + " now");
             } catch (InterruptedException ex) {
