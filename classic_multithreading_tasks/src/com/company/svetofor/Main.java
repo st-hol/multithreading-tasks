@@ -1,75 +1,92 @@
 package com.company.svetofor;
 
-import java.util.Random;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.concurrent.Exchanger;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
-import static com.company.svetofor.Main.generateProcessingTime;
+import static com.company.svetofor.Main.generateRandomBounded;
+import static com.company.svetofor.Main.swapColors;
 
 
 enum LightColor {
     GREEN,
-    RED;
+    RED
 }
 
 public class Main {
     /**
      * generates random
      */
-    public static int generateProcessingTime(int min, int max) {
+    public static int generateRandomBounded(int min, int max) {
         return (int) (min + Math.random() * (max - min + 1));
     }
 
+    public static void swapColors(LightColor currentLight, Map<LightColor, Boolean> colors){
+        if (currentLight.equals(LightColor.GREEN)) {
+            colors.put(LightColor.GREEN, true);
+            colors.put(LightColor.RED, false);
+        } else {
+            colors.put(LightColor.GREEN, false);
+            colors.put(LightColor.RED, true);
+        }
+    }
+
+    private static final int N_THREADS = 2;
+
     public static void main(String[] args) {
+        ExecutorService executor = Executors.newFixedThreadPool(N_THREADS);
 
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
-
-        Exchanger<LightColor> ex = new Exchanger<>();
-        executor.execute(new FirstTrafficLight(ex));
-        executor.execute(new SecondTrafficLight(ex));
+        Exchanger<LightColor> lightColorExchanger = new Exchanger<>();
+        executor.execute(new FirstTrafficLight(lightColorExchanger));
+        executor.execute(new SecondTrafficLight(lightColorExchanger));
     }
 }
 
-class FirstTrafficLight implements Runnable{
+class FirstTrafficLight implements Runnable {
 
-    Exchanger<LightColor> exchanger;
-    LightColor currentLight;
+    private Exchanger<LightColor> lightColorExchanger;
+    private LightColor currentLight;
+    private EnumMap<LightColor, Boolean> colors = new EnumMap<>(LightColor.class);
 
-    FirstTrafficLight(Exchanger<LightColor> ex){
-        this.exchanger=ex;
+    FirstTrafficLight(Exchanger<LightColor> ex) {
+        this.lightColorExchanger = ex;
         currentLight = LightColor.GREEN;
     }
+
     public void run() {
         while (true) {
             try {
-                int processingTime = generateProcessingTime(500,2000);
-                Thread.sleep(processingTime);
-                currentLight = exchanger.exchange(currentLight);
-                System.out.println("FirstTrafficLight color is: " + currentLight + " now");
+                Thread.sleep( generateRandomBounded(500, 2000));
+                currentLight = lightColorExchanger.exchange(currentLight);
+                swapColors(currentLight, colors);
+                System.out.println("FirstTrafficLight colors: " + colors.toString() + " now");
             } catch (InterruptedException ex) {
                 System.out.println(ex.getMessage());
             }
         }
     }
 }
-class SecondTrafficLight implements Runnable{
 
-    Exchanger<LightColor> exchanger;
-    LightColor currentLight;
+class SecondTrafficLight implements Runnable {
 
-    SecondTrafficLight(Exchanger<LightColor> ex){
-        this.exchanger=ex;
+    private Exchanger<LightColor> exchanger;
+    private LightColor currentLight;
+    private EnumMap<LightColor, Boolean> colors = new EnumMap<>(LightColor.class);
+
+    SecondTrafficLight(Exchanger<LightColor> ex) {
+        this.exchanger = ex;
         currentLight = LightColor.RED;
     }
-    public void run() {
 
+    public void run() {
         while (true) {
             try {
-                int processingTime = generateProcessingTime(500,2000);
-                Thread.sleep(processingTime);
+                Thread.sleep(generateRandomBounded(500, 2000));
                 currentLight = exchanger.exchange(currentLight);
-                System.out.println("SecondTrafficLight color is: " + currentLight + " now");
+                swapColors(currentLight, colors);
+                System.out.println("SecondTrafficLight colors: " + colors.toString() + " now");
             } catch (InterruptedException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -78,6 +95,75 @@ class SecondTrafficLight implements Runnable{
 }
 
 
+//enum LightColor {
+//    GREEN,
+//    RED
+//}
+//
+//public class Main {
+//    /**
+//     * generates random
+//     */
+//    public static int generateProcessingTime(int min, int max) {
+//        return (int) (min + Math.random() * (max - min + 1));
+//    }
+//
+//    public static void main(String[] args) {
+//        ExecutorService executor = Executors.newFixedThreadPool(2);
+//
+//        Exchanger<LightColor> ex = new Exchanger<>();
+//        executor.execute(new FirstTrafficLight(ex));
+//        executor.execute(new SecondTrafficLight(ex));
+//    }
+//}
+//
+//class FirstTrafficLight implements Runnable{
+//
+//    Exchanger<LightColor> exchanger;
+//    LightColor currentLight;
+//
+//    FirstTrafficLight(Exchanger<LightColor> ex){
+//        this.exchanger=ex;
+//        currentLight = LightColor.GREEN;
+//    }
+//    public void run() {
+//        while (true) {
+//            try {
+//                int waitTime = generateProcessingTime(500,2000);
+//                Thread.sleep(waitTime);
+//                currentLight = exchanger.exchange(currentLight);
+//                System.out.println("FirstTrafficLight color is: " + currentLight + " now");
+//            } catch (InterruptedException ex) {
+//                System.out.println(ex.getMessage());
+//            }
+//        }
+//    }
+//}
+//class SecondTrafficLight implements Runnable{
+//
+//    Exchanger<LightColor> exchanger;
+//    LightColor currentLight;
+//
+//    SecondTrafficLight(Exchanger<LightColor> ex){
+//        this.exchanger=ex;
+//        currentLight = LightColor.RED;
+//    }
+//    public void run() {
+//
+//        while (true) {
+//            try {
+//                int waitTime = generateProcessingTime(500,2000);
+//                Thread.sleep(waitTime);
+//                currentLight = exchanger.exchange(currentLight);
+//                System.out.println("SecondTrafficLight color is: " + currentLight + " now");
+//            } catch (InterruptedException ex) {
+//                System.out.println(ex.getMessage());
+//            }
+//        }
+//    }
+//}
+//
+//
 
 
 //
