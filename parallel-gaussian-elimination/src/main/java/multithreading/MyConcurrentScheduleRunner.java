@@ -40,7 +40,7 @@ public class MyConcurrentScheduleRunner {
     }
 
     private void runOne(AbstractProductionWithLockThread prodThread) {
-        prodThread.injectRefs(lock);
+        prodThread.instantiateLockAndApplyImmediately(lock);
         prodThread.start();
     }
 

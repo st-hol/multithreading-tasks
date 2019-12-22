@@ -8,13 +8,13 @@ public class Main {
 
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
-    private static final String SOURCE_FILE_PATH = "D:\\PROJECTS\\TRAINING_PROJECTS\\parallel-gaussian" +
-            "-elimination\\src\\main\\resources\\test3x3.txt";
-    private static final String OUTPUT_PATH = "D:\\PROJECTS\\TRAINING_PROJECTS\\parallel-gaussian" +
-            "-elimination\\src\\main\\resources\\";
+    private static final String SOURCE_FILE_PATH = "E:\\KPI\\Parallel calculations -1\\multithreading-tasks\\" +
+            "parallel-gaussian-elimination\\src\\main\\resources\\test3x3.txt";
+    private static final String OUTPUT_PATH = "E:\\KPI\\Parallel calculations -1\\multithreading-tasks\\" +
+            "parallel-gaussian-elimination\\src\\main\\resources\\";
 
     public static void main(String[] args) throws IOException {
-        SystemLinearEquations systemLinearEquations = Parser.readEquationFromFile(SOURCE_FILE_PATH);
+        SystemLinearEquations systemLinearEquations = FileEquationsParser.readEquationFromFile(SOURCE_FILE_PATH);
 
         LOG.log(Level.INFO, "System linear equations before solving:\n");
         systemLinearEquations.printLeftMatrix();

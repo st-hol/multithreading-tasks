@@ -1,8 +1,11 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
-public class Parser {
+public class FileEquationsParser {
 
-    private Parser() {
+    private FileEquationsParser() {
     }
 
     public static SystemLinearEquations readEquationFromFile(String path) throws IOException {

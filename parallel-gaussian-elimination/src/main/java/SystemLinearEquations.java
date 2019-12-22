@@ -28,7 +28,6 @@ public class SystemLinearEquations {
         System.out.println("Right matrix: ");
         for (double x : rightMatrix) {
             System.out.printf("%.3f\n", x);
-//            System.out.println(x);
         }
     }
 
