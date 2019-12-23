@@ -2,6 +2,9 @@ package com.company.svetofor;
 
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TrafficLightService {
     /**
      * generates random
@@ -21,5 +24,6 @@ public class TrafficLightService {
             colors.put(LightColor.GREEN, false);
             colors.put(LightColor.RED, true);
         }
+        log.info("colors switched;");
     }
 }

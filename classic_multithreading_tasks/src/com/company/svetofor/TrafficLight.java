@@ -3,7 +3,10 @@ package com.company.svetofor;
 import java.util.EnumMap;
 import java.util.concurrent.Exchanger;
 
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TrafficLight implements Runnable{
     private String name;
     private LightColor currentLight;
@@ -27,9 +30,9 @@ public class TrafficLight implements Runnable{
                 Thread.sleep(service.generateRandomBounded(500, 2000));
                 currentLight = lightColorExchanger.exchange(currentLight);
                 service.swapColors(currentLight, colors);
-                System.out.println(name + " colors: " + colors.toString() + " now");
+                log.info(name + " colors: " + colors.toString() + " now");
             } catch (InterruptedException ex) {
-                System.out.println(ex.getMessage());
+                log.error(ex.getMessage());
             }
         }
     }

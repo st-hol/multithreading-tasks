@@ -2,6 +2,9 @@ package com.company.trafficlightstask;
 
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TrafficLightService {
     /**
      * generates random
@@ -21,5 +24,6 @@ public class TrafficLightService {
             colors.put(TrafficLightColor.GREEN, false);
             colors.put(TrafficLightColor.RED, true);
         }
+        log.info("colors switched;");
     }
 }
